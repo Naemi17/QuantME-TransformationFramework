@@ -1,4 +1,4 @@
-import {createModeler} from "../quantme/Utilities";
+import { createModeler } from "../quantme/Utilities";
 
 
 /**
@@ -25,7 +25,7 @@ export function createMyShapes(metaData){
   modeling.createShape(splittingGateway, { x: 50, y: 50 }, process);
   modeling.createShape(joiningGateway, { x: 50, y: 50 }, process);
   modeling.createShape(PreprocessingTask, { x: 50, y: 50 }, process);
-  modeling.createShape(QuantumprocessingTask, { x: 50, y: 50 }, process);
+  modeling.createShape(QuantumTask, { x: 50, y: 50 }, process);
   modeling.createShape(PostprocessingTask, { x: 50, y: 50 }, process);
 
   // TODO handle loops according to splitting output
