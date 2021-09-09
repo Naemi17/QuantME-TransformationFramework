@@ -6,23 +6,24 @@ import {createModeler} from "../quantme/Utilities";
 * e.g. this creates a template for the moment.
 * @param: metaData metaData containing the infos about loops
 */
-export function createMyShapes(metaData){
+export function createMyShapes(metaData){ 
+
   let modeler = createModeler();
   let modeling = modeler.get('modeling');
   let elementRegistry = modeler.get('elementRegistry');
-  let bpmnFactory = modeler.get('bpmnFactory'); 
+  let elementFactory = modeler.get('bpmnFactory'); 
   
   const process = elementRegistry.get('Process_1');
   const startEvent = elementRegistry.get('StartEvent_1');
-  const endEvent = elementFactory.createShape({ type: 'bpmn:EndEvent'});
-  const PreprocessingTask = elementFactory.createShape({ type: 'bpmn:ScripTask'});
+  const endEvent = elementFactory.createShape({ type: 'bpmn:EndEvent' });
+  const PreprocessingTask = elementFactory.createShape({ type: 'bpmn:ScripTask' });
   const QuantumTask = elementFactory.createShape({ type: 'bpmn:ScripTask'});
-  const PostprocessingTask = elementFactory.createShape({ type: 'bpmn:ScripTask'});
-  const splittingGateway = elementFactory.createShape({ type: 'bpmn:ExclusiveGateway'});
-  const joiningGateway = elementFactory.createShape({ type: 'bpmn:ExclusiveGateway'});
+  const PostprocessingTask = elementFactory.createShape({ type: 'bpmn:ScripTask' });
+  const splittingGateway = elementFactory.createShape({ type: 'bpmn:ExclusiveGateway' });
+  const joiningGateway = elementFactory.createShape({ type: 'bpmn:ExclusiveGateway' });
 
-  modeling.createShape(splittingGateway, { x: 50, y: 50 }, process)
-  modeling.createShape(joiningGateway, { x: 50, y: 50 }, process)
+  modeling.createShape(splittingGateway, { x: 50, y: 50 }, process);
+  modeling.createShape(joiningGateway, { x: 50, y: 50 }, process);
   modeling.createShape(PreprocessingTask, { x: 50, y: 50 }, process);
   modeling.createShape(QuantumprocessingTask, { x: 50, y: 50 }, process);
   modeling.createShape(PostprocessingTask, { x: 50, y: 50 }, process);
@@ -30,8 +31,8 @@ export function createMyShapes(metaData){
   // TODO handle loops according to splitting output
   modeling.connect(startEvent, PreprocessingTask);
   modeling.connect(PreprocessingTask, splittingGateway);
-  modeling.connect(splittingGateway, QuantumprocessingTask);
-  modeling.connect(QuantumprocessingTask, joiningGateway);
+  modeling.connect(splittingGateway, QuantumTask);
+  modeling.connect(QuantumTask, joiningGateway);
   modeling.connect(joiningGateway, PostprocessingTask );
   modeling.connect(joiningGateway, splittingGateway);
   modeling.connect(PostprocessingTask, endEvent);
