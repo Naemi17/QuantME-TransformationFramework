@@ -37,10 +37,19 @@ export function createTemplate(modeler) {
   var postprocessingTaskBo = elementRegistry.get(postprocessingTask.id).businessObject;
   postprocessingTaskBo.name = 'Postprocessing Part';
   var endEvent = modeling.createShape({ type: 'bpmn:EndEvent' }, { x: 100, y: 100 }, process, {});
+  var splittingGateway = modeling.createShape({ type: 'bpmn:ExclusiveGateway' }, { x: 50, y: 50 }, process, {});
+  var splittingGatewayBo = elementRegistry.get(splittingGateway.id).businessObject;
+  splittingGatewayBo.name = 'Quantum-Loop';
+  var joiningGateway = modeling.createShape({ type: 'bpmn:ExclusiveGateway' }, { x: 50, y: 50 }, process, {});
+  var joiningGatewayBo = elementRegistry.get(joiningGateway.id).businessObject;
+  joiningGatewayBo.name = 'Quantum-Loop completed?'
   // connect
   modeling.connect(startEvent, preprocessingTask, { type: 'bpmn:SequenceFlow' });
-  modeling.connect(preprocessingTask, quantumTask, { type: 'bpmn:SequenceFlow' });
-  modeling.connect(quantumTask, postprocessingTask, { type: 'bpmn:SequenceFlow' });
+  modeling.connect(preprocessingTask, splittingGateway, { type: 'bpmn:SequenceFlow' });
+  modeling.connect(splittingGateway, quantumTask, { type: 'bpmn:SequenceFlow' });
+  modeling.connect(quantumTask, joiningGateway, { type: 'bpmn:SequenceFlow' });
+  modeling.connect(joiningGateway, splittingGateway, { type: 'bpmn:SequenceFlow' });
+  modeling.connect(joiningGateway, postprocessingTask, { type: 'bpmn:SequenceFlow' });
   modeling.connect(postprocessingTask, endEvent, { type: 'bpmn:SequenceFlow' });
   // make it pretty
   layout(modeling, elementRegistry, rootElement);
