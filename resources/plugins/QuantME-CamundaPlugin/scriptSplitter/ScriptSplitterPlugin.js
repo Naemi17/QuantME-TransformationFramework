@@ -51,9 +51,9 @@ export default class ScriptSplitterPlugin extends PureComponent {
 * start the algorithm
 */
 startSplitting() {
-  var message = 'Start the Splitting...'
+  var message = 'Start the Splitting Algorithm.'
   this.props.displayNotification({
-    type:'warning',
+    type:'info',
     title: 'ScriptSplitter',
     content: message,
     duration: 10000
