@@ -13,6 +13,10 @@ import { Fill } from 'camunda-modeler-plugin-helpers/components';
 import { createTemplate } from './Creator';
 
 
+/**
+* Essentially this class will create a seperate button in the toolbar.
+* If this button is clicked, the scriptSplitter will be executed.
+*/
 export default class ScriptSplitterPlugin extends PureComponent {
   constructor(props) {
     super(props);
@@ -47,17 +51,19 @@ export default class ScriptSplitterPlugin extends PureComponent {
     </Fragment>);
   }
 
-/**
-* start the algorithm
-*/
-startSplitting() {
-  var message = 'Start the Splitting Algorithm.'
-  this.props.displayNotification({
-    type:'info',
-    title: 'ScriptSplitter',
-    content: message,
-    duration: 10000
-    });
-    createTemplate(this.modeler);
+
+  /**
+  * start the algorithm
+  * @param file the source-file to split
+  */
+  startSplitting(file) {
+    var message = 'Start the Splitting Algorithm.'
+    this.props.displayNotification({
+      type:'info',
+      title: 'ScriptSplitter',
+      content: message,
+      duration: 10000
+      });
+      createTemplate(this.modeler);
   }
 }
