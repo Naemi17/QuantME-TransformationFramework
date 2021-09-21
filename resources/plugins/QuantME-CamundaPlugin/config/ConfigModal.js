@@ -27,9 +27,10 @@ export default function ConfigModal({ initValues, onClose }) {
   const [qrmRepoName, setQrmRepoName] = useState(initValues.qrmRepoName);
   const [qrmUserName, setQrmUserName] = useState(initValues.qrmUserName);
   const [qrmRepoPath, setQrmRepoPath] = useState(initValues.qrmRepoPath);
-
+  //const [scriptSplitterEndpoint, setScriptSplitterEndpoint] = useState(initValues.scriptSplitterEndpoint);
+  var scriptSplitterEndpoint = "http:localhost:8090"
   // return the new values to the config plugin
-  const onSubmit = () => onClose({ camundaEndpoint, opentoscaEndpoint, wineryEndpoint, transformationFrameworkEndpoint, nisqAnalyzerEndpoint, qrmUserName, qrmRepoName, qrmRepoPath });
+  const onSubmit = () => onClose({ camundaEndpoint, opentoscaEndpoint, wineryEndpoint, transformationFrameworkEndpoint, nisqAnalyzerEndpoint, qrmUserName, qrmRepoName, qrmRepoPath, scriptSplitterEndpoint });
 
   return <Modal onClose={onClose}>
 
@@ -121,6 +122,16 @@ export default function ConfigModal({ initValues, onClose }) {
                   onChange={event => setQrmRepoPath(event.target.value)}/>
               </td>
             </tr>
+            <tr>
+              <td align="right">Script Splitter Endpoint:</td>
+              <td align="left">
+                <input
+                  type="string"
+                  name="scriptSplitterEndpoint"
+                  value={scriptSplitterEndpoint}
+                  onChange={event => this.setScriptSplitterEndpoint(event.target.value)}/>
+              </td>
+            </tr>
           </tbody>
         </table>
       </form>
@@ -135,3 +146,7 @@ export default function ConfigModal({ initValues, onClose }) {
   </Modal>;
 }
 
+function setScriptSplitterEndpoint(value){
+  // TODO implment
+  var scriptSplitterEndpoint = value;
+}
