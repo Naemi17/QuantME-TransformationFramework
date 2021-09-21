@@ -24,18 +24,26 @@ export function createTemplate(modeler) {
   const rootElement = getRootProcess(definitions);
   var process = elementRegistry.get(rootElement.id);
 
+  // get the random topic names
+  var topics = getTopics();
   // get the (default) start event
   var startEvent = elementRegistry.get('StartEvent_1');
   // create
-  var quantumTask = modeling.createShape({ type: 'bpmn:ScriptTask' }, { x: 100, y: 100 }, process, {});
+  var quantumTask = modeling.createShape({ type: 'bpmn:ServiceTask', implementation: 'External' }, { x: 100, y: 100 }, process, {});
   var quantumTaskBo = elementRegistry.get(quantumTask.id).businessObject;
   quantumTaskBo.name = 'Quantum Part';
-  var preprocessingTask = modeling.createShape({ type: 'bpmn:ScriptTask' }, { x: 100, y: 100 }, process, {});
+  quantumTaskBo.type = 'external';
+  quantumTaskBo.topic = topics[0];
+  var preprocessingTask = modeling.createShape({ type: 'bpmn:ServiceTask' }, { x: 100, y: 100 }, process, {});
   var preprocessingTaskBo = elementRegistry.get(preprocessingTask.id).businessObject;
   preprocessingTaskBo.name = 'Preprocessing part';
-  var postprocessingTask = modeling.createShape({ type: 'bpmn:ScriptTask' }, { x: 100, y: 100 }, process, {});
+  preprocessingTaskBo.type = 'external';
+  preprocessingTaskBo.topic = topics[1];
+  var postprocessingTask = modeling.createShape({ type: 'bpmn:ServiceTask' }, { x: 100, y: 100 }, process, {});
   var postprocessingTaskBo = elementRegistry.get(postprocessingTask.id).businessObject;
   postprocessingTaskBo.name = 'Postprocessing Part';
+  postprocessingTaskBo.type = 'external';
+  postprocessingTaskBo.topic = topics[2];
   var endEvent = modeling.createShape({ type: 'bpmn:EndEvent' }, { x: 100, y: 100 }, process, {});
   var splittingGateway = modeling.createShape({ type: 'bpmn:ExclusiveGateway' }, { x: 50, y: 50 }, process, {});
   var splittingGatewayBo = elementRegistry.get(splittingGateway.id).businessObject;
@@ -55,6 +63,16 @@ export function createTemplate(modeler) {
   layout(modeling, elementRegistry, rootElement);
 }
 
+
+/**
+* generate random names for topics
+*/
+function getTopics() {
+  // TODO randomize topic-names
+  var topics = ["RandomPre", "RandomQuant", "RandomPost"];
+
+  return topics;
+}
 /**
 * create my shapes here
 * e.g. this creates a template for the moment.
