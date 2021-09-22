@@ -41,6 +41,7 @@ export default function ConfigModal({ initValues, onClose }) {
   });
 
 
+  //
   return <Modal onClose={onClose}>
     <Title>
       QuantME Modeler Configuration
@@ -48,6 +49,7 @@ export default function ConfigModal({ initValues, onClose }) {
 
     <Body>
       <form id="quantmeConfigForm" onSubmit={onSubmit}>
+        <!-- different tabs as buttons -->
         <div class="tab" id="quantmeConfigTabs">
           <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'CamundaEngineEndpointTab')">Camunda Engine Endpoint</button>
           <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'OpenTOSCAEndpointTab')">OpenTOSCA Endpoint</button>
@@ -57,6 +59,7 @@ export default function ConfigModal({ initValues, onClose }) {
           <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'QRMDataTab')">QRM Data</button>
         </div>
 
+        <!-- content of each tabs accessible by a click on the button -->
         <div id="CamundaEngineEndpointTab" class="tabcontent">
           <h3>Camunda Engine Endpoint:</h3>
           <p>
@@ -112,6 +115,7 @@ export default function ConfigModal({ initValues, onClose }) {
           </p>
         </div>
 
+        <!-- QRMDataTab includes an additional table for structure -->
         <div id="QRMDataTab" className="tabcontent">
           <h3>QRM Data</h3>
           <table>
@@ -162,7 +166,17 @@ export default function ConfigModal({ initValues, onClose }) {
   </Modal>;
 
   function openTab(evt, tabName) {
-
+    var j, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    tablinks = document.getElementsByClassName("tablinks");
+    for (j = 0; j < tabcontent.length; j++) {
+      tabcontent[j].style.display = "none";
+    }
+    for (j = 0; j < tablinks.length; j++) {
+      tablinks[j].className = tablinks[j].className.replace("active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget().className += "active";
   }
 
 }
