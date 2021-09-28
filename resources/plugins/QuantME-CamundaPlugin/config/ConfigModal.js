@@ -41,119 +41,154 @@ export default function ConfigModal({ initValues, onClose }) {
   });
 
 
-  //
-  return <Modal onClose={onClose}>
+  // refs to enable changing of the state through the plugin
+  let elementsRootRef = React.createRef();
+
+  // method to enable button functionality by hiding and displaying different div elements
+  function openTab(tabName, id) {
+    const elements = elementsRootRef.current.children;
+    const length = elements.length;
+    for (let i = 0; i < length; i++) {
+      elements[i].hidden = true;
+    }
+    elements[id].hidden = false;
+  }
+
+
+  return <Modal onClose={onClose} openTab={openTab}>
     <Title>
       QuantME Modeler Configuration
     </Title>
 
     <Body>
       <form id="quantmeConfigForm" onSubmit={onSubmit}>
-        <!-- different tabs as buttons -->
-        <div class="tab" id="quantmeConfigTabs">
-          <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'CamundaEngineEndpointTab')">Camunda Engine Endpoint</button>
-          <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'OpenTOSCAEndpointTab')">OpenTOSCA Endpoint</button>
-          <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'WineryEndpointTab')">Winery Endpoint</button>
-          <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'QuantMEFrameworkEndpointTab')">QuantME Framework Endpoint</button>
-          <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'NISQAnalyzerEndpointTab')">NISQ Analyzer Endpoint</button>
-          <button class="tablinks" className="btn btn-primary" onClick="openTab(event, 'QRMDataTab')">QRM Data</button>
-        </div>
+        <table>
+          <tbody>
+            <tr className="spaceUnder">
+              <td align="right">
+                <button type="button" className="btn btn-primary" onClick={() => openTab('CamundaEngineEndpointTab', 0)}>Camunda Engine Endpoint</button>
+              </td>
+              <td align="left">
+                <button type="button" className="btn btn-primary" onClick={() => openTab('OpenTOSCAEndpointTab', 1)}>OpenTOSCA Endpoint</button>
+              </td>
+            </tr>
+            <tr className="spaceUnder">
+              <td align="right">
+                <button type="button" className="btn btn-primary" onClick={() => openTab('QuantMEFrameworkEndpointTab', 2)}>QuantME Framework Endpoint</button>
+              </td>
+              <td align="left">
+                <button type="button" className="btn btn-primary" onClick={() => openTab('NISQAnalyzerEndpointTab', 3)}>NISQ Analyzer Endpoint</button>
+              </td>
+            </tr>
+            <tr className="spaceUnder">
+              <td align="right">
+                <button type="button" className="btn btn-primary" onClick={() => openTab('QRMDataTab', 4)}>QRM Data</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-        <!-- content of each tabs accessible by a click on the button -->
-        <div id="CamundaEngineEndpointTab" class="tabcontent">
-          <h3>Camunda Engine Endpoint:</h3>
-          <p>
-            <input
-              type="string"
-              name="camundaEndpoint"
-              value={camundaEndpoint}
-              onChange={event => setCamundaEndpoint(event.target.value)}/>
-          </p>
-        </div>
+        <div id="quantmeConfigElements" ref={elementsRootRef}>
+          <div className="spaceAbove" hidden={true} id="CamundaEngineEndpointTab">
+            <h3>Camunda Engine Endpoint:</h3>
+            <p>
+              <input
+                type="string"
+                name="camundaEndpoint"
+                value={camundaEndpoint}
+                onChange={event => setCamundaEndpoint(event.target.value)}/>
+            </p>
+          </div>
 
-        <div id="OpenTOSCAEndpointTab" className="tabcontent">
-          <h3>OpenTOSCA Endpoint:</h3>
-          <p>
-            <input
-              type="string"
-              name="opentoscaEndpoint"
-              value={opentoscaEndpoint}
-              onChange={event => setOpentoscaEndpoint(event.target.value)}/>
-          </p>
-        </div>
+          <div className="spaceAbove" hidden={true} id="OpenTOSCAEndpointTab">
+            <h3>OpenTOSCA</h3>
+            <table>
+              <tbody>
+                <tr className="spaceUnder">
+                  <td align="right">OpenTOSCA Endpoint:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="opentoscaEndpoint"
+                      value={opentoscaEndpoint}
+                      onChange={event => setOpentoscaEndpoint(event.target.value)}/>
+                  </td>
+                </tr>
+                <tr className="spaceUnder">
+                  <td align="right">Winery Endpoint:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="wineryEndpoint"
+                      value={wineryEndpoint}
+                      onChange={event => setWineryEndpoint(event.target.value)}/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div id="WineryEndpointTab" className="tabcontent">
-          <h3>Winery Endpoint:</h3>
-          <p>
-            <input
-              type="string"
-              name="wineryEndpoint"
-              value={wineryEndpoint}
-              onChange={event => setWineryEndpoint(event.target.value)}/>
-          </p>
-        </div>
+          <div className="spaceAbove" hidden={true} id="QuantMEFrameworkEndpointTab">
+            <h3>QuantME Framework Endpoint:</h3>
+            <p>
+              <input
+                type="string"
+                name="transformationFrameworkEndpoint"
+                value={transformationFrameworkEndpoint}
+                onChange={event => setTransformationFrameworkEndpoint(event.target.value)}/>
+            </p>
+          </div>
 
-        <div id="QuantMEFrameworkEndpointTab" className="tabcontent">
-          <h3>QuantME Framework Endpoint:</h3>
-          <p>
-            <input
-              type="string"
-              name="transformationFrameworkEndpoint"
-              value={transformationFrameworkEndpoint}
-              onChange={event => setTransformationFrameworkEndpoint(event.target.value)}/>
-          </p>
-        </div>
+          <div className="spaceAbove" hidden={true} id="NISQAnalyzerEndpointTab">
+            <h3>NISQ Analyzer Endpoint:</h3>
+            <p>
+              <input
+                type="string"
+                name="nisqAnalyzerEndpoint"
+                value={nisqAnalyzerEndpoint}
+                onChange={event => setNisqAnalyzerEndpoint(event.target.value)}/>
+            </p>
+          </div>
 
-        <div id="NISQAnalyzerEndpointTab" className="tabcontent">
-          <h3>NISQ Analyzer Endpoint:</h3>
-          <p>
-            <input
-              type="string"
-              name="nisqAnalyzerEndpoint"
-              value={nisqAnalyzerEndpoint}
-              onChange={event => setNisqAnalyzerEndpoint(event.target.value)}/>
-          </p>
-        </div>
 
-        <!-- QRMDataTab includes an additional table for structure -->
-        <div id="QRMDataTab" className="tabcontent">
-          <h3>QRM Data</h3>
-          <table>
-            <tbody>
-              <tr className="spaceUnder">
-                <td align="right">QRM Repository User:</td>
-                <td align="left">
-                  <input
-                    type="string"
-                    name="qrmUserName"
-                    value={qrmUserName}
-                    onChange={event => setQrmUserName(event.target.value)}/>
-                </td>
-              </tr>
-              <tr className="spaceUnder">
-                <td align="right">QRM Repository Name:</td>
-                <td align="left">
-                  <input
-                    type="string"
-                    name="qrmRepoName"
-                    value={qrmRepoName}
-                    onChange={event => setQrmRepoName(event.target.value)}/>
-                </td>
-              </tr>
-              <tr>
-                <td align="right">QRM Repository Path:</td>
-                <td align="left">
-                  <input
-                    type="string"
-                    name="qrmRepoPath"
-                    value={qrmRepoPath}
-                    onChange={event => setQrmRepoPath(event.target.value)}/>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="spaceAbove" hidden={true} id="QRMDataTab">
+            <h3>QRM Data</h3>
+            <table>
+              <tbody>
+                <tr className="spaceUnder">
+                  <td align="right">QRM Repository User:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="qrmUserName"
+                      value={qrmUserName}
+                      onChange={event => setQrmUserName(event.target.value)}/>
+                  </td>
+                </tr>
+                <tr className="spaceUnder">
+                  <td align="right">QRM Repository Name:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="qrmRepoName"
+                      value={qrmRepoName}
+                      onChange={event => setQrmRepoName(event.target.value)}/>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right">QRM Repository Path:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="qrmRepoPath"
+                      value={qrmRepoPath}
+                      onChange={event => setQrmRepoPath(event.target.value)}/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-
       </form>
     </Body>
 
@@ -165,19 +200,7 @@ export default function ConfigModal({ initValues, onClose }) {
     </Footer>
   </Modal>;
 
-  function openTab(evt, tabName) {
-    var j, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    tablinks = document.getElementsByClassName("tablinks");
-    for (j = 0; j < tabcontent.length; j++) {
-      tabcontent[j].style.display = "none";
-    }
-    for (j = 0; j < tablinks.length; j++) {
-      tablinks[j].className = tablinks[j].className.replace("active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget().className += "active";
-  }
+
 
 }
 
