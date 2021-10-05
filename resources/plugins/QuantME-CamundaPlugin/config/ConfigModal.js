@@ -47,8 +47,9 @@ export default function ConfigModal({ initValues, onClose }) {
   // method to enable button functionality by hiding and displaying different div elements
   function openTab(tabName, id) {
     const elements = elementsRootRef.current.children;
-    const length = elements.length;
-    for (let i = 0; i < length; i++) {
+    const eLength = elements.length;
+
+    for (let i = 0; i < eLength; i++) {
       elements[i].hidden = true;
     }
     elements[id].hidden = false;
@@ -62,42 +63,32 @@ export default function ConfigModal({ initValues, onClose }) {
 
     <Body>
       <form id="quantmeConfigForm" onSubmit={onSubmit}>
-        <table>
-          <tbody>
-            <tr className="spaceUnder">
-              <td align="right">
-                <button type="button" className="btn btn-primary" onClick={() => openTab('CamundaEngineEndpointTab', 0)}>Camunda Engine Endpoint</button>
-              </td>
-              <td align="left">
-                <button type="button" className="btn btn-primary" onClick={() => openTab('OpenTOSCAEndpointTab', 1)}>OpenTOSCA Endpoint</button>
-              </td>
-            </tr>
-            <tr className="spaceUnder">
-              <td align="right">
-                <button type="button" className="btn btn-primary" onClick={() => openTab('QuantMEFrameworkEndpointTab', 2)}>QuantME Framework Endpoint</button>
-              </td>
-              <td align="left">
-                <button type="button" className="btn btn-primary" onClick={() => openTab('NISQAnalyzerEndpointTab', 3)}>NISQ Analyzer Endpoint</button>
-              </td>
-            </tr>
-            <tr className="spaceUnder">
-              <td align="right">
-                <button type="button" className="btn btn-primary" onClick={() => openTab('QRMDataTab', 4)}>QRM Data</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+
+        <div id="quantmeConfigButtons">
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('CamundaEngineEndpointTab', 0)}>Camunda</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('OpenTOSCAEndpointTab', 1)}>OpenTOSCA</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('QuantMEFrameworkEndpointTab', 2)}>QuantME</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('NISQAnalyzerEndpointTab', 3)}>NISQ Analyzer</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('QRMDataTab', 4)}>QRM Data</button>
+        </div>
 
         <div id="quantmeConfigElements" ref={elementsRootRef}>
-          <div className="spaceAbove" hidden={true} id="CamundaEngineEndpointTab">
-            <h3>Camunda Engine Endpoint:</h3>
-            <p>
-              <input
-                type="string"
-                name="camundaEndpoint"
-                value={camundaEndpoint}
-                onChange={event => setCamundaEndpoint(event.target.value)}/>
-            </p>
+          <div className="spaceAbove" hidden={false} id="CamundaEngineEndpointTab">
+            <h3>Camunda Engine</h3>
+            <table>
+              <tbody>
+                <tr className="spaceUnder">
+                  <td align="right">Camunda Engine Endpoint:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="camundaEndpoint"
+                      value={camundaEndpoint}
+                      onChange={event => setCamundaEndpoint(event.target.value)}/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
           <div className="spaceAbove" hidden={true} id="OpenTOSCAEndpointTab">
@@ -129,25 +120,39 @@ export default function ConfigModal({ initValues, onClose }) {
           </div>
 
           <div className="spaceAbove" hidden={true} id="QuantMEFrameworkEndpointTab">
-            <h3>QuantME Framework Endpoint:</h3>
-            <p>
-              <input
-                type="string"
-                name="transformationFrameworkEndpoint"
-                value={transformationFrameworkEndpoint}
-                onChange={event => setTransformationFrameworkEndpoint(event.target.value)}/>
-            </p>
+            <h3>QuantME Framework</h3>
+            <table>
+              <tbody>
+                <tr className="spaceUnder">
+                  <td align="right">QuantME Framework Endpoint:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="transformationFrameworkEndpoint"
+                      value={transformationFrameworkEndpoint}
+                      onChange={event => setTransformationFrameworkEndpoint(event.target.value)}/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
           <div className="spaceAbove" hidden={true} id="NISQAnalyzerEndpointTab">
-            <h3>NISQ Analyzer Endpoint:</h3>
-            <p>
-              <input
-                type="string"
-                name="nisqAnalyzerEndpoint"
-                value={nisqAnalyzerEndpoint}
-                onChange={event => setNisqAnalyzerEndpoint(event.target.value)}/>
-            </p>
+            <h3>NISQ Analyzer</h3>
+            <table>
+              <tbody>
+                <tr className="spaceUnder">
+                  <td align="right">NISQ Analyzer Endpoint:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="nisqAnalyzerEndpoint"
+                      value={nisqAnalyzerEndpoint}
+                      onChange={event => setNisqAnalyzerEndpoint(event.target.value)}/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
 
