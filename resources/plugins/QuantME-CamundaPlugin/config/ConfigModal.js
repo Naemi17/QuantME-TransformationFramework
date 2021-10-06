@@ -204,8 +204,5 @@ export default function ConfigModal({ initValues, onClose }) {
       </div>
     </Footer>
   </Modal>;
-
-
-
 }
 
