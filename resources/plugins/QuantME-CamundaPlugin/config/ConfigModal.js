@@ -41,22 +41,53 @@ export default function ConfigModal({ initValues, onClose }) {
   });
 
 
-  // refs to enable changing of the state through the plugin
+  // refs to enable changing the state through the plugin
   let elementsRootRef = React.createRef();
+  let elementsSubRef = React.createRef();
+  let switchRef = React.createRef();
 
   // method to enable button functionality by hiding and displaying different div elements
-  function openTab(tabName, id) {
-    const elements = elementsRootRef.current.children;
-    const eLength = elements.length;
-
-    for (let i = 0; i < eLength; i++) {
+  function openTab(id) {
+    let elements = elementsRootRef.current.children;
+    for (let i = 0; i < elements.length; i++) {
       elements[i].hidden = true;
     }
     elements[id].hidden = false;
   }
 
+  // method to enable slider functionality by hiding and displaying different div elements and changing qrm methods
+  function activateSlider() {
+    console.log('slider used');
+    let elements;
+    let buttonSwitch;
+    let textLeft;
+    let textRight;
+    try {
+      elements = elementsSubRef.current.children;
+      textLeft = switchRef.current.children[0];
+      buttonSwitch = switchRef.current.children[1].children[0];
+      textRight = switchRef.current.children[2];
 
-  return <Modal onClose={onClose} openTab={openTab}>
+      if (buttonSwitch.checked === true) {
+        elements[0].hidden = true;
+        elements[1].hidden = false;
+        textLeft.style.color = 'var(--grey-darken-33)';
+        textRight.style.color = 'var(--blue-base-65)';
+      }
+      else {
+        elements[0].hidden = false;
+        elements[1].hidden = true;
+        textLeft.style.color = 'var(--blue-base-65)';
+        textRight.style.color = 'var(--grey-darken-33)';
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  return <Modal onClose={onClose} openTab={openTab} activateSlider={activateSlider}>
     <Title>
       QuantME Modeler Configuration
     </Title>
@@ -65,11 +96,11 @@ export default function ConfigModal({ initValues, onClose }) {
       <form id="quantmeConfigForm" onSubmit={onSubmit}>
 
         <div id="quantmeConfigButtons">
-          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('CamundaEngineEndpointTab', 0)}>Camunda</button>
-          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('OpenTOSCAEndpointTab', 1)}>OpenTOSCA</button>
-          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('QuantMEFrameworkEndpointTab', 2)}>QuantME</button>
-          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('NISQAnalyzerEndpointTab', 3)}>NISQ Analyzer</button>
-          <button type="button" className="innerConfig btn-primary" onClick={() => openTab('QRMDataTab', 4)}>QRM Data</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab(0)}>Camunda</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab(1)}>OpenTOSCA</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab(2)}>QuantME</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab(3)}>NISQ Analyzer</button>
+          <button type="button" className="innerConfig btn-primary" onClick={() => openTab(4)}>QRM Data</button>
         </div>
 
         <div id="quantmeConfigElements" ref={elementsRootRef}>
@@ -155,44 +186,85 @@ export default function ConfigModal({ initValues, onClose }) {
             </table>
           </div>
 
-
           <div className="spaceAbove" hidden={true} id="QRMDataTab">
             <h3>QRM Data</h3>
-            <table>
-              <tbody>
-                <tr className="spaceUnder">
-                  <td align="right">QRM Repository User:</td>
-                  <td align="left">
-                    <input
-                      type="string"
-                      name="qrmUserName"
-                      value={qrmUserName}
-                      onChange={event => setQrmUserName(event.target.value)}/>
-                  </td>
-                </tr>
-                <tr className="spaceUnder">
-                  <td align="right">QRM Repository Name:</td>
-                  <td align="left">
-                    <input
-                      type="string"
-                      name="qrmRepoName"
-                      value={qrmRepoName}
-                      onChange={event => setQrmRepoName(event.target.value)}/>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="right">QRM Repository Path:</td>
-                  <td align="left">
-                    <input
-                      type="string"
-                      name="qrmRepoPath"
-                      value={qrmRepoPath}
-                      onChange={event => setQrmRepoPath(event.target.value)}/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
+            <div className="spaceAbove" id="qrmSwitch" ref={switchRef}>
+              <b style={{ color: 'var(--blue-base-65)' }}>Use Git Repository</b>
+              <label className="switch">
+                <input type="checkbox" defaultChecked={false} onClick={() => activateSlider(this)}/>
+                <span className="slider round"> </span>
+              </label>
+              <b>Use local Repository</b>
+            </div>
+
+            <div id="qrmElements" ref={elementsSubRef}>
+              <div className="spaceAbove" hidden={false} id="Git">
+                <table>
+                  <tbody>
+                    <tr className="spaceUnder">
+                      <td align="right">QRM Repository User:</td>
+                      <td align="left">
+                        <input
+                          type="string"
+                          name="qrmUserName"
+                          value={qrmUserName}
+                          onChange={event => setQrmUserName(event.target.value)}/>
+                      </td>
+                    </tr>
+                    <tr className="spaceUnder">
+                      <td align="right">QRM Repository Name:</td>
+                      <td align="left">
+                        <input
+                          type="string"
+                          name="qrmRepoName"
+                          value={qrmRepoName}
+                          onChange={event => setQrmRepoName(event.target.value)}/>
+                      </td>
+                    </tr>
+                    <tr className="spaceUnder">
+                      <td align="right">QRM Repository Path:</td>
+                      <td align="left">
+                        <input
+                          type="string"
+                          name="qrmRepoPath"
+                          value={qrmRepoPath}
+                          onChange={event => setQrmRepoPath(event.target.value)}/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="spaceAbove" hidden={true} id="Local">
+                <table>
+                  <tbody>
+                    <tr className="spaceUnder">
+                      <td align="right">Dummy Text 1:</td>
+                      <td align="left">
+                        <input
+                          type="string"
+                          name="Dummy Name"
+                          value='Dummy value'
+                          readOnly={true}/>
+                      </td>
+                    </tr>
+                    <tr className="spaceUnder">
+                      <td align="right">Dummy Text 2:</td>
+                      <td align="left">
+                        <input
+                          type="string"
+                          name="Dummy Name"
+                          value='Dummy value'
+                          readOnly={true}/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
+
         </div>
       </form>
     </Body>
