@@ -13,6 +13,11 @@
 import React, { useState } from 'camunda-modeler-plugin-helpers/react';
 import { Modal } from 'camunda-modeler-plugin-helpers/components';
 
+// import for cloning functionality
+import cloneQRMRepository from '../../../../app/lib/quantme/qrm-manager/qrm-repository-handler';
+
+// const clone = require('../../../../app/lib/quantme/qrm-manager/qrm-repository-handler');
+
 // polyfill upcoming structural components
 const Title = Modal.Title || (({ children }) => <h2>{children}</h2>);
 const Body = Modal.Body || (({ children }) => <div>{children}</div>);
@@ -39,7 +44,6 @@ export default function ConfigModal({ initValues, onClose }) {
     qrmRepoName,
     qrmRepoPath
   });
-
 
   // refs to enable changing the state through the plugin
   let elementsRootRef = React.createRef();
@@ -84,7 +88,6 @@ export default function ConfigModal({ initValues, onClose }) {
     catch (e) {
       console.log(e);
     }
-
   }
 
   return <Modal onClose={onClose} openTab={openTab} activateSlider={activateSlider}>
@@ -192,7 +195,7 @@ export default function ConfigModal({ initValues, onClose }) {
             <div className="spaceAbove" id="qrmSwitch" ref={switchRef}>
               <b style={{ color: 'var(--blue-base-65)' }}>Use Git Repository</b>
               <label className="switch">
-                <input type="checkbox" defaultChecked={false} onClick={() => activateSlider(this)}/>
+                <input type="checkbox" defaultChecked={false} onClick={() => activateSlider()}/>
                 <span className="slider round"> </span>
               </label>
               <b>Use local Repository</b>
@@ -234,6 +237,7 @@ export default function ConfigModal({ initValues, onClose }) {
                     </tr>
                   </tbody>
                 </table>
+                <button type="button" className="innerConfig btn-primary" onClick={() => cloneQRMRepository()}>Clone Repository</button>
               </div>
 
               <div className="spaceAbove" hidden={true} id="Local">
