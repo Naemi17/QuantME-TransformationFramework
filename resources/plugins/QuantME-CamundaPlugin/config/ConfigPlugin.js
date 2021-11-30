@@ -29,6 +29,9 @@ export default class ConfigPlugin extends PureComponent {
 
     this.state = defaultState;
 
+    // get QuantME component from the backend, e.g., to retrieve current QRMs
+    this.quantME = props._getGlobal('quantME');
+
     this.handleConfigClosed = this.handleConfigClosed.bind(this);
 
     // get config to update details in the backend
@@ -124,11 +127,17 @@ export default class ConfigPlugin extends PureComponent {
     }
   }
 
+  async cloneQRMRepository() {
+    console.log('Cloning repository!');
+    await this.quantME.cloneRepository();
+  }
+
   render() {
 
     // render config button and pop-up menu
     return (<Fragment>
       <Fill slot="toolbar">
+        <button type="button" className="innerConfig btn-primary" onClick={() => this.cloneQRMRepository()}>Clone Repository</button>
         <button type="button" className="src-app-primitives-Button__Button--3Ffn0" title="Open configuration menu"
           onClick={() => this.setState({ configOpen: true })}>
           <span className="config"><span className="indent">Configuration</span></span>

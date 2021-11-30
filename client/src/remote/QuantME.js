@@ -27,6 +27,15 @@ export default class QuantME {
   }
 
   /**
+   * Clone repository
+   *
+   * @return {Promise}
+   */
+  cloneRepository() {
+    return this.backend.send('quantme:clone-repo');
+  }
+
+  /**
    * Update the current QRM set by requesting an update at the Github repository
    *
    * @return {Promise}

@@ -13,9 +13,6 @@
 import React, { useState } from 'camunda-modeler-plugin-helpers/react';
 import { Modal } from 'camunda-modeler-plugin-helpers/components';
 
-// import for cloning functionality
-import cloneQRMRepository from '../../../../app/lib/quantme/qrm-manager/qrm-repository-handler';
-
 // const clone = require('../../../../app/lib/quantme/qrm-manager/qrm-repository-handler');
 
 // polyfill upcoming structural components
@@ -237,7 +234,6 @@ export default function ConfigModal({ initValues, onClose }) {
                     </tr>
                   </tbody>
                 </table>
-                <button type="button" className="innerConfig btn-primary" onClick={() => cloneQRMRepository()}>Clone Repository</button>
               </div>
 
               <div className="spaceAbove" hidden={true} id="Local">

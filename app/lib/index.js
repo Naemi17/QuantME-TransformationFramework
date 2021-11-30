@@ -52,6 +52,10 @@ const {
 } = require('./framework-config');
 
 const {
+  cloneQRMRepository
+} = require('./quantme/qrm-manager/qrm-repository-handler')
+
+const {
   getQRMs,
   updateQRMs
 } = require('./quantme');
@@ -230,6 +234,10 @@ renderer.on('api:add-result', function(targetRoute, id, args) {
 
 renderer.on('quantme:get-qrms', function(done) {
   done(null, getQRMs());
+});
+
+renderer.on('quantme:clone-repo', function(done) {
+  done(null, cloneQRMRepository());
 });
 
 renderer.on('quantme:update-qrms', async function(done) {
