@@ -29,6 +29,9 @@ export default function ConfigModal({ initValues, onClose }) {
   const [qrmRepoName, setQrmRepoName] = useState(initValues.qrmRepoName);
   const [qrmUserName, setQrmUserName] = useState(initValues.qrmUserName);
   const [qrmRepoPath, setQrmRepoPath] = useState(initValues.qrmRepoPath);
+  const [qrmRepoWebPath, setQrmRepoWebPath] = useState(initValues.qrmRepoWebPath);
+  const [qrmRepoLocalPath, setQrmRepoLocalPath] = useState(initValues.qrmRepoLocalPath);
+  const [qrmRepoLocalName, setQrmRepoLocalName] = useState(initValues.qrmRepoLocalName);
 
   // return the new values to the config plugin
   const onSubmit = () => onClose({
@@ -39,7 +42,10 @@ export default function ConfigModal({ initValues, onClose }) {
     nisqAnalyzerEndpoint,
     qrmUserName,
     qrmRepoName,
-    qrmRepoPath
+    qrmRepoPath,
+    qrmRepoWebPath,
+    qrmRepoLocalPath,
+    qrmRepoLocalName
   });
 
   // refs to enable changing the state through the plugin
@@ -240,23 +246,33 @@ export default function ConfigModal({ initValues, onClose }) {
                 <table>
                   <tbody>
                     <tr className="spaceUnder">
-                      <td align="right">Dummy Text 1:</td>
+                      <td align="right">QRM Repository Web Path:</td>
                       <td align="left">
                         <input
                           type="string"
-                          name="Dummy Name"
-                          value='Dummy value'
-                          readOnly={true}/>
+                          name="qrmRepoWebPath"
+                          value={qrmRepoWebPath}
+                          onChange={event => setQrmRepoWebPath(event.target.value)}/>
                       </td>
                     </tr>
                     <tr className="spaceUnder">
-                      <td align="right">Dummy Text 2:</td>
+                      <td align="right">QRM Repository Local Path:</td>
                       <td align="left">
                         <input
                           type="string"
-                          name="Dummy Name"
-                          value='Dummy value'
-                          readOnly={true}/>
+                          name="qrmRepoLocalPath"
+                          value={qrmRepoLocalPath}
+                          onChange={event => setQrmRepoLocalPath(event.target.value)}/>
+                      </td>
+                    </tr>
+                    <tr className="spaceUnder">
+                      <td align="right">QRM Repository Local Name:</td>
+                      <td align="left">
+                        <input
+                          type="string"
+                          name="qrmRepoLocalName"
+                          value={qrmRepoLocalName}
+                          onChange={event => setQrmRepoLocalName(event.target.value)}/>
                       </td>
                     </tr>
                   </tbody>

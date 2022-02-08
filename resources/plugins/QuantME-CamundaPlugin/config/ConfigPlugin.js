@@ -102,6 +102,21 @@ export default class ConfigPlugin extends PureComponent {
           eventBus.fire('config.updated', self.modeler.config);
         }
       });
+      editorActions.register({
+        qrmRepoWebPathChanged: function(qrmRepoWebPath) {
+          self.modeler.config.qrmRepoWebPath = qrmRepoWebPath;
+        }
+      });
+      editorActions.register({
+        qrmRepoLocalPathChanged: function(qrmRepoLocalPath) {
+          self.modeler.config.qrmRepoLocalPath = qrmRepoLocalPath;
+        }
+      });
+      editorActions.register({
+        qrmRepoLocalNameChanged: function(qrmRepoLocalName) {
+          self.modeler.config.qrmRepoLocalName = qrmRepoLocalName;
+        }
+      });
     });
 
     // change to modeler corresponding to the active tab
@@ -137,7 +152,7 @@ export default class ConfigPlugin extends PureComponent {
     // render config button and pop-up menu
     return (<Fragment>
       <Fill slot="toolbar">
-        <button type="button" className="innerConfig btn-primary" onClick={() => this.cloneQRMRepository()}>Clone Repository</button>
+        <button type="button" className="src-app-primitives-Button__Button--3Ffn0" title="Clone the QRM Repository" onClick={() => this.cloneQRMRepository()}>Clone Repository</button>
         <button type="button" className="src-app-primitives-Button__Button--3Ffn0" title="Open configuration menu"
           onClick={() => this.setState({ configOpen: true })}>
           <span className="config"><span className="indent">Configuration</span></span>

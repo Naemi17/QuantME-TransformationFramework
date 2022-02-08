@@ -9,24 +9,41 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// following imports are needed for the isomorphic git library
+const config = require('../../framework-config');
 
+// following imports are needed for the isomorphic git library
 const isomorphic = require('isomorphic-git');
-//import * as git from 'isomorphic-git';
-// both following imports don't work and lead to the require error
-// import { getQRMRepositoryPath, getQRMRepositoryName, getQRMRepositoryUserName } from '../../framework-config';
-// const config = require('../../framework-config');
+const fs = require('fs');
+const path = require('path');
+const http = require('isomorphic-git/http/node');
+
+// variables for specifying the repository to be cloned, the system path and the repository name
+let qrmRepoWebPath;
+let qrmRepoLocalPath;
+const qrmRepoLocalName = 'Test-Name';
+
+const cloneurl = 'https://github.com/isomorphic-git/lightning-fs';
+const cloneurl2 = 'https://github.com/isomorphic-git/cors-proxy';
 
 /**
  * Clone the QRM Repository defined by path, name and username
  */
 module.exports.cloneQRMRepository = async function() {
-
-  // uncommented code works without the above imports, however as soon as the imports are used the require error appears
-  // let branches = await git.listBranches({ fs, dir: '/QuantME-TransformationFramework' });
-  // console.log(branches);
-  // let output = getQRMRepositoryUserName();
-  // console.log(output);
   console.log('clone button pressed');
+  let dir;
+  const currentDir = path.dirname(process.cwd());
+  qrmRepoLocalPath = config.getQRMRepositoryLocalPath();
+  if (qrmRepoLocalPath === '') {
+    dir = path.join(currentDir, qrmRepoLocalName);
+    console.log('first case, path is undefined');
+    console.log(dir);
+  } else {
+    dir = path.join(currentDir, qrmRepoLocalName);
+    const dir2 = path.join(qrmRepoLocalPath, qrmRepoLocalName);
+    console.log('second case, path is defined');
+    console.log(dir2);
+  }
+  isomorphic.clone({ fs, http, dir, url: cloneurl2 }).then(console.log);
+  console.log('cloning done!');
   return null;
 };

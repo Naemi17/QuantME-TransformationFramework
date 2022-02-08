@@ -48,12 +48,18 @@ const {
   getNisqAnalyzerEndpoint,
   getTransformationFrameworkEndpoint,
   setNisqAnalyzerEndpoint,
-  setTransformationFrameworkEndpoint
+  setTransformationFrameworkEndpoint,
+  getQRMRepositoryWebPath,
+  setQRMRepositoryWebPath,
+  getQRMRepositoryLocalName,
+  setQRMRepositoryLocalName,
+  getQRMRepositoryLocalPath,
+  setQRMRepositoryLocalPath
 } = require('./framework-config');
 
 const {
   cloneQRMRepository
-} = require('./quantme/qrm-manager/qrm-repository-handler')
+} = require('./quantme/qrm-manager/qrm-repository-handler');
 
 const {
   getQRMs,
@@ -295,7 +301,10 @@ renderer.on('config:get-form-modal', function(done) {
     transformationFrameworkEndpoint: getTransformationFrameworkEndpoint(),
     qrmUserName: getQRMRepositoryUserName(),
     qrmRepoName: getQRMRepositoryName(),
-    qrmRepoPath: getQRMRepositoryPath()
+    qrmRepoPath: getQRMRepositoryPath(),
+    qrmRepoWebPath: getQRMRepositoryWebPath(),
+    qrmRepoLocalName: getQRMRepositoryLocalName(),
+    qrmRepoLocalPath: getQRMRepositoryLocalPath()
   };
   done(null, configurationJson);
 });
@@ -311,6 +320,9 @@ renderer.on('config:set-from-modal', function(config) {
   setQRMRepositoryPath(config.qrmRepoPath);
   setTransformationFrameworkEndpoint(config.transformationFrameworkEndpoint);
   setNisqAnalyzerEndpoint(config.nisqAnalyzerEndpoint);
+  setQRMRepositoryWebPath(config.qrmRepoWebPath);
+  setQRMRepositoryLocalName(config.qrmRepoLocalName);
+  setQRMRepositoryLocalPath(config.qrmRepoLocalPath);
 });
 
 // plugin toggling //////////

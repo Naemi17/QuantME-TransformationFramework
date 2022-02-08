@@ -196,3 +196,79 @@ module.exports.setQRMUserName = function(userName) {
     app.emit('menu:action', 'qrmUserNameChanged', userName);
   }
 };
+
+/**
+ * Methods to utilize the cloning feature
+ */
+
+/**
+ * Get the web path/url used to access the QRM repository
+ *
+ * @return {string} the specified web path/url
+ */
+module.exports.getQRMRepositoryWebPath = function() {
+  if (config.qrmRepositoryWebPath === undefined) {
+    return '';
+  }
+  return config.qrmRepositoryWebPath;
+};
+
+/**
+ * Set the web path/url used to access the QRM repository
+ *
+ * @param url the web path/url
+ */
+module.exports.setQRMRepositoryWebPath = function(url) {
+  if (url !== null && url !== undefined) {
+    config.qrmRepositoryWebPath = url;
+    app.emit('menu:action', 'qrmRepoWebPathChanged', url);
+  }
+};
+
+/**
+ * Get the path to the local QRM repository
+ *
+ * @return {string} the path
+ */
+module.exports.getQRMRepositoryLocalPath = function() {
+  if (config.qrmRepositoryLocalPath === undefined) {
+    return '';
+  }
+  return config.qrmRepositoryLocalPath;
+};
+
+/**
+ * Set the path to the local QRM repository
+ *
+ * @param path the path
+ */
+module.exports.setQRMRepositoryLocalPath = function(path) {
+  if (path !== null && path !== undefined) {
+    config.qrmRepositoryLocalPath = path;
+    app.emit('menu:action', 'qrmRepoLocalPathChanged', path);
+  }
+};
+
+/**
+ * Get the name of the local QRM repository folder
+ *
+ * @return {string} the name
+ */
+module.exports.getQRMRepositoryLocalName = function() {
+  if (config.qrmRepositoryLocalName === undefined) {
+    return '';
+  }
+  return config.qrmRepositoryLocalName;
+};
+
+/**
+ * Set the name of the local QRM repository folder
+ *
+ * @param name the name
+ */
+module.exports.setQRMRepositoryLocalName = function(name) {
+  if (name !== null && name !== undefined) {
+    config.qrmRepositoryLocalName = name;
+    app.emit('menu:action', 'qrmRepoLocalNameChanged', name);
+  }
+};

@@ -17,5 +17,8 @@ module.exports = {
   transformationFrameworkEndpoint: process.env.TRANSFORMATION_FRAMEWORK_ENDPOINT || 'http://localhost:8888',
   githubUsername: process.env.QRM_USERNAME,
   githubRepositoryName: process.env.QRM_REPONAME,
-  githubRepositoryPath: process.env.QRM_REPOPATH
+  githubRepositoryPath: process.env.QRM_REPOPATH,
+  qrmRepositoryWebPath: process.env.QRM_REPOWEBPATH,
+  qrmRepositoryLocalPath: process.env.QRM_REPOLOCALPATH,
+  qrmRepositoryLocalName: process.env.QRM_REPOLOCALNAME
 };
