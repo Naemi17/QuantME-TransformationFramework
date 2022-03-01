@@ -54,7 +54,9 @@ const {
   getQRMRepositoryLocalName,
   setQRMRepositoryLocalName,
   getQRMRepositoryLocalPath,
-  setQRMRepositoryLocalPath
+  setQRMRepositoryLocalPath,
+  getQiskitRuntimeHandlerEndpoint,
+  setQiskitRuntimeHandlerEndpoint
 } = require('./framework-config');
 
 const {
@@ -304,7 +306,8 @@ renderer.on('config:get-form-modal', function(done) {
     qrmRepoPath: getQRMRepositoryPath(),
     qrmRepoWebPath: getQRMRepositoryWebPath(),
     qrmRepoLocalName: getQRMRepositoryLocalName(),
-    qrmRepoLocalPath: getQRMRepositoryLocalPath()
+    qrmRepoLocalPath: getQRMRepositoryLocalPath(),
+    qiskitRuntimeHandlerEndpoint: getQiskitRuntimeHandlerEndpoint()
   };
   done(null, configurationJson);
 });
@@ -323,6 +326,7 @@ renderer.on('config:set-from-modal', function(config) {
   setQRMRepositoryWebPath(config.qrmRepoWebPath);
   setQRMRepositoryLocalName(config.qrmRepoLocalName);
   setQRMRepositoryLocalPath(config.qrmRepoLocalPath);
+  setQiskitRuntimeHandlerEndpoint(config.qiskitRuntimeHandlerEndpoint);
 });
 
 // plugin toggling //////////

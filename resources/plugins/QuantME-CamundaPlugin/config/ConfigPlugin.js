@@ -117,6 +117,12 @@ export default class ConfigPlugin extends PureComponent {
           self.modeler.config.qrmRepoLocalName = qrmRepoLocalName;
         }
       });
+      editorActions.register({
+        qiskitRuntimeHandlerEndpointChanged: function(qiskitRuntimeHandlerEndpoint) {
+          self.modeler.config.qiskitRuntimeHandlerEndpoint = qiskitRuntimeHandlerEndpoint;
+          eventBus.fire('config.updated', self.modeler.config);
+        }
+      });
     });
 
     // change to modeler corresponding to the active tab

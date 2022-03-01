@@ -272,3 +272,27 @@ module.exports.setQRMRepositoryLocalName = function(name) {
     app.emit('menu:action', 'qrmRepoLocalNameChanged', name);
   }
 };
+
+/**
+ * Get the endpoint of the Qiskit Runtime Handler
+ *
+ * @return {string} the specified endpoint
+ */
+module.exports.getQiskitRuntimeHandlerEndpoint = function() {
+  if (config.qiskitRuntimeHandlerEndpoint === undefined) {
+    return '';
+  }
+  return config.qiskitRuntimeHandlerEndpoint;
+};
+
+/**
+ * Set the endpoint of the Qiskit Runtime Handler
+ *
+ * @param endpoint the endpoint
+ */
+module.exports.setQiskitRuntimeHandlerEndpoint = function(endpoint) {
+  if (endpoint !== null && endpoint !== undefined) {
+    config.qiskitRuntimeHandlerEndpoint = endpoint;
+    app.emit('menu:action', 'qiskitRuntimeHandlerEndpointChanged', endpoint);
+  }
+};
