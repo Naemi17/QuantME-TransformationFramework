@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Institute of Architecture of Application Systems -
+ * Copyright (c) 2022 Institute of Architecture of Application Systems -
  * University of Stuttgart
  *
  * This program and the accompanying materials are made available under the
@@ -28,6 +28,7 @@ export default function ConfigModal({ initValues, onClose }) {
   const [qrmUserName, setQrmUserName] = useState(initValues.qrmUserName);
   const [qrmRepoPath, setQrmRepoPath] = useState(initValues.qrmRepoPath);
   const [qiskitRuntimeHandlerEndpoint, setQiskitRuntimeHandlerEndpoint] = useState(initValues.qiskitRuntimeHandlerEndpoint);
+  const [awsRuntimeHandlerEndpoint, setAWSRuntimeHandlerEndpoint] = useState(initValues.awsRuntimeHandlerEndpoint);
 
   // return the new values to the config plugin
   const onSubmit = () => onClose({
@@ -39,7 +40,8 @@ export default function ConfigModal({ initValues, onClose }) {
     qrmUserName,
     qrmRepoName,
     qrmRepoPath,
-    qiskitRuntimeHandlerEndpoint
+    qiskitRuntimeHandlerEndpoint,
+    awsRuntimeHandlerEndpoint
   });
 
 
@@ -197,6 +199,16 @@ export default function ConfigModal({ initValues, onClose }) {
                       name="qiskitRuntimeHandlerEndpoint"
                       value={qiskitRuntimeHandlerEndpoint}
                       onChange={event => setQiskitRuntimeHandlerEndpoint(event.target.value)}/>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right">AWS Runtime Handler Endpoint:</td>
+                  <td align="left">
+                    <input
+                      type="string"
+                      name="awsRuntimeHandlerEndpoint"
+                      value={awsRuntimeHandlerEndpoint}
+                      onChange={event => setAWSRuntimeHandlerEndpoint(event.target.value)}/>
                   </td>
                 </tr>
               </tbody>

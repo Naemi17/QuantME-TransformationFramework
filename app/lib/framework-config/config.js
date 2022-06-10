@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Institute of Architecture of Application Systems -
+ * Copyright (c) 2022 Institute of Architecture of Application Systems -
  * University of Stuttgart
  *
  * This program and the accompanying materials are made available under the
@@ -16,6 +16,7 @@ module.exports = {
   nisqAnalyzerEndpoint: process.env.NISQ_ANALYZER_ENDPOINT || 'http://localhost:8098/nisq-analyzer',
   transformationFrameworkEndpoint: process.env.TRANSFORMATION_FRAMEWORK_ENDPOINT || 'http://localhost:8888',
   qiskitRuntimeHandlerEndpoint: process.env.QISKIT_RUNTIME_HANDLER_ENDPOINT || 'http://localhost:8889',
+  awsRuntimeHandlerEndpoint: process.env.AWS_RUNTIME_HANDLER_ENDPOINT || 'http://localhost:8890',
   githubUsername: process.env.QRM_USERNAME,
   githubRepositoryName: process.env.QRM_REPONAME,
   githubRepositoryPath: process.env.QRM_REPOPATH

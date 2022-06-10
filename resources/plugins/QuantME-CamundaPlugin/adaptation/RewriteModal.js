@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Institute of Architecture of Application Systems -
+ * Copyright (c) 2022 Institute of Architecture of Application Systems -
  * University of Stuttgart
  *
  * This program and the accompanying materials are made available under the
@@ -43,6 +43,12 @@ export default function RewriteModal({ onClose, candidates }) {
                   <button type="button" className="btn btn-secondary" onClick={() => onSubmit(i, 'Qiskit Runtime')}>Rewrite Workflow</button>
                 </td>
               </tr>
+              <tr className="spaceUnder">
+                  <td align="right">AWS Runtime</td>
+                  <td align="left">
+                    <button type="button" className="btn btn-secondary" onClick={() => onSubmit(i, 'AWS Runtime')}>Rewrite Workflow</button>
+                  </td>
+                </tr>
             </tbody>
           </table>
         </div>);
@@ -63,6 +69,12 @@ export default function RewriteModal({ onClose, candidates }) {
                   <button type="button" className="btn btn-secondary" onClick={() => onSubmit(i, 'Qiskit Runtime')}>Rewrite Workflow</button>
                 </td>
               </tr>
+              <tr className="spaceUnder">
+                  <td align="right">AWS Runtime</td>
+                  <td align="left">
+                    <button type="button" className="btn btn-secondary" onClick={() => onSubmit(i, 'AWS Runtime')}>Rewrite Workflow</button>
+                  </td>
+                </tr>
             </tbody>
           </table>
         </div>);

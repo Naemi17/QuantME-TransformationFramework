@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Institute of Architecture of Application Systems -
+ * Copyright (c) 2022 Institute of Architecture of Application Systems -
  * University of Stuttgart
  *
  * This program and the accompanying materials are made available under the
@@ -102,6 +102,12 @@ export default class ConfigPlugin extends PureComponent {
       editorActions.register({
         qiskitRuntimeHandlerEndpointChanged: function(qiskitRuntimeHandlerEndpoint) {
           self.modeler.config.qiskitRuntimeHandlerEndpoint = qiskitRuntimeHandlerEndpoint;
+          eventBus.fire('config.updated', self.modeler.config);
+        }
+      });
+      editorActions.register({
+        awsRuntimeHandlerEndpointChanged: function(awsRuntimeHandlerEndpoint) {
+          self.modeler.config.awsRuntimeHandlerEndpoint = awsRuntimeHandlerEndpoint;
           eventBus.fire('config.updated', self.modeler.config);
         }
       });
