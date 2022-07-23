@@ -50,7 +50,9 @@ const {
   setNisqAnalyzerEndpoint,
   setTransformationFrameworkEndpoint,
   getQiskitRuntimeHandlerEndpoint,
-  setQiskitRuntimeHandlerEndpoint
+  setQiskitRuntimeHandlerEndpoint,
+  getAWSRuntimeHandlerEndpoint,
+  setAWSRuntimeHandlerEndpoint
 } = require('./framework-config');
 
 const {
@@ -290,7 +292,8 @@ renderer.on('config:get-form-modal', function(done) {
     qrmUserName: getQRMRepositoryUserName(),
     qrmRepoName: getQRMRepositoryName(),
     qrmRepoPath: getQRMRepositoryPath(),
-    qiskitRuntimeHandlerEndpoint: getQiskitRuntimeHandlerEndpoint()
+    qiskitRuntimeHandlerEndpoint: getQiskitRuntimeHandlerEndpoint(),
+    awsRuntimeHandlerEndpoint: getAWSRuntimeHandlerEndpoint()
   };
   done(null, configurationJson);
 });
@@ -307,6 +310,7 @@ renderer.on('config:set-from-modal', function(config) {
   setTransformationFrameworkEndpoint(config.transformationFrameworkEndpoint);
   setNisqAnalyzerEndpoint(config.nisqAnalyzerEndpoint);
   setQiskitRuntimeHandlerEndpoint(config.qiskitRuntimeHandlerEndpoint);
+  setAWSRuntimeHandlerEndpoint(config.awsRuntimeHandlerEndpoint);
 });
 
 // plugin toggling //////////

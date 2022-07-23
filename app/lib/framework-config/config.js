@@ -12,7 +12,7 @@
 module.exports = {
   camundaEndpoint: process.env.CAMUNDA_ENDPOINT || 'http://localhost:8080/engine-rest',
   opentoscaEndpoint: process.env.OPENTOSCA_ENDPOINT || 'http://localhost:1337/csars',
-  wineryEndpoint: process.env.WINERY_ENDPOINT || 'http://localhost:8081/winery',
+  wineryEndpoint: process.env.WINERY_ENDPOINT || 'http://localhost:8093/winery',
   nisqAnalyzerEndpoint: process.env.NISQ_ANALYZER_ENDPOINT || 'http://localhost:8098/nisq-analyzer',
   transformationFrameworkEndpoint: process.env.TRANSFORMATION_FRAMEWORK_ENDPOINT || 'http://localhost:8888',
   qiskitRuntimeHandlerEndpoint: process.env.QISKIT_RUNTIME_HANDLER_ENDPOINT || 'http://localhost:8889',

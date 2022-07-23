@@ -17,6 +17,7 @@ import AdaptationModal from './AdaptationModal';
 import { findOptimizationCandidates } from './CandidateDetector';
 import RewriteModal from './RewriteModal';
 import { getQiskitRuntimeProgram, getQiskitRuntimeProgramDeploymentModel } from './runtimes/QiskitRuntimeHandler';
+import { getAWSRuntimeProgramDeploymentModel } from './runtimes/AWSRuntimeHandler';
 import { rewriteWorkflow } from './WorkflowRewriter';
 
 const defaultState = {
@@ -140,11 +141,14 @@ export default class AdaptationPlugin extends PureComponent {
       let rewriteCandidate = result.candidates[result.rewriteCandidateId];
       let programGenerationResult;
       switch (result.runtimeName) {
-      case 'Qiskit Runtime':
-        programGenerationResult = await getQiskitRuntimeProgramDeploymentModel(rewriteCandidate, this.modeler.config, await this.quantME.getQRMs());
-        break;
-      default:
-        programGenerationResult = { error: 'Unable to find suitable runtime handler for: ' + result.runtimeName };
+        case 'Qiskit Runtime':
+          programGenerationResult = await getQiskitRuntimeProgramDeploymentModel(rewriteCandidate, this.modeler.config, await this.quantME.getQRMs());
+          break;
+        case 'AWS Runtime':
+          programGenerationResult = await getAWSRuntimeProgramDeploymentModel(rewriteCandidate, this.modeler.config, await this.quantME.getQRMs());
+          break;
+        default:
+          programGenerationResult = { error: 'Unable to find suitable runtime handler for: ' + result.runtimeName };
       }
 
       // check if hybrid program generation was successful
