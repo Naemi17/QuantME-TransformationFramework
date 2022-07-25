@@ -20,12 +20,12 @@ import {
 } from 'client/src/app/quantme/deployment/OpenTOSCAUtils';
 
 /**
- * Generate a Qiskit Runtime program for the given candidate
+ * Generate a AWS Runtime program for the given candidate
  *
- * @param candidate the candidate to generate the Qiskit Runtime program for
+ * @param candidate the candidate to generate the AWS Runtime program for
  * @param endpoints endpoints of the connected services
  * @param qrms the set of QRMs currently available in the framework
- * @return the updated candidate with the URL to the deployment model for the generated Qiskit Runtime program or an error message if the generation fails
+ * @return the updated candidate with the URL to the deployment model for the generated AWS Runtime program or an error message if the generation fails
  */
 export async function getAWSRuntimeProgramDeploymentModel(candidate, endpoints, qrms) {
 
@@ -34,7 +34,7 @@ export async function getAWSRuntimeProgramDeploymentModel(candidate, endpoints, 
   for (let i = 0; i < quantumCircuitExecutionTasks.length; i++) {
     if (quantumCircuitExecutionTasks[i].provider.toUpperCase() !== 'IBMQ') {
       console.log('Found QuantumCircuitExecutionTask with provider different than IBMQ: ', quantumCircuitExecutionTasks[i].provider);
-      return { error: 'Only QuantumCircuitExecutionTasks with provider IBMQ supported for Qiskit Runtime!' };
+      return { error: 'Only QuantumCircuitExecutionTasks with provider IBMQ supported for AWS Runtime!' };
     }
   }
 
@@ -64,7 +64,7 @@ export async function getAWSRuntimeProgramDeploymentModel(candidate, endpoints, 
   let invalidModelingConstruct = getInvalidModelingConstruct(rootElement);
   if (invalidModelingConstruct !== undefined) {
     console.log('Found invalid modeling construct of type: ', invalidModelingConstruct.$type);
-    return { error: 'Modeling construct not suitable for Qiskit Runtime program generation: ' + invalidModelingConstruct.$type };
+    return { error: 'Modeling construct not suitable for AWS Runtime program generation: ' + invalidModelingConstruct.$type };
   }
 
   // check if all service tasks have either a deployment model attached and all script tasks provide the code inline and retrieve the files
@@ -74,12 +74,12 @@ export async function getAWSRuntimeProgramDeploymentModel(candidate, endpoints, 
   }
 
   // invoke handler and return resulting hybrid program or error message
-  let programBlobs = await invokeQiskitRuntimeHandler(candidate, requiredPrograms, endpoints.awsRuntimeHandlerEndpoint, modeler);
+  let programBlobs = await invokeAWSRuntimeHandler(candidate, requiredPrograms, endpoints.awsRuntimeHandlerEndpoint, modeler);
   if (programBlobs.error !== undefined) {
     return { error: programBlobs.error };
   }
 
-  // generate the deployment model to deploy the Qiskit Runtime program and the corresponding agent
+  // generate the deployment model to deploy the AWS Runtime program and the corresponding agent
   let deploymentModelUrl = await createDeploymentModel(candidate, programBlobs, endpoints.wineryEndpoint);
   if (deploymentModelUrl.error !== undefined) {
     return { error: deploymentModelUrl.error };
@@ -108,7 +108,7 @@ async function createDeploymentModel(candidate, programBlobs, wineryEndpoint) {
     'hybrid_program_agent.zip');
 
   // create new ServiceTemplate for the hybrid program by adding a new version of the predefined template
-  let serviceTemplateURL = await createNewAgentServiceTemplate(wineryEndpoint, 'QiskitRuntimeAgentService', 'http://quantil.org/quantme/pull');
+  let serviceTemplateURL = await createNewAgentServiceTemplate(wineryEndpoint, 'AWSRuntimeAgentService', 'http://quantil.org/quantme/pull');
   if (serviceTemplateURL.error !== undefined) {
     return { error: serviceTemplateURL.error };
   }
@@ -116,7 +116,7 @@ async function createDeploymentModel(candidate, programBlobs, wineryEndpoint) {
   // update DA reference within the created ServiceTemplate version
   let getTemplateXmlResult = await fetch(serviceTemplateURL + 'xml');
   let getTemplateXmlResultJson = await getTemplateXmlResult.text();
-  getTemplateXmlResultJson = getTemplateXmlResultJson.replace(':QiskitRuntimeAgentContainer_DA"', ':' + artifactName + '"');
+  getTemplateXmlResultJson = getTemplateXmlResultJson.replace(':AWSRuntimeAgentContainer_DA"', ':' + artifactName + '"');
   await fetch(serviceTemplateURL, {
     method: 'PUT',
     body: getTemplateXmlResultJson,
@@ -130,20 +130,20 @@ async function createDeploymentModel(candidate, programBlobs, wineryEndpoint) {
 }
 
 /**
- * Generate a Qiskit Runtime program for the given candidate using the given set of quantum and classical programs
+ * Generate a AWS Runtime program for the given candidate using the given set of quantum and classical programs
  *
- * @param candidate the candidate for which the Qiskit Runtime program should be generated
- * @param requiredPrograms the programs that have to be merged into the Qiskit Runtime program
- * @param qiskitRuntimeHandlerEndpoint the endpoint of the external Qiskit Runtime Handler performing the program generation
+ * @param candidate the candidate for which the AWS Runtime program should be generated
+ * @param requiredPrograms the programs that have to be merged into the AWS Runtime program
+ * @param awsRuntimeHandlerEndpoint the endpoint of the external AWS Runtime Handler performing the program generation
  * @param modeler the modeler comprising the transformed workflow model of the candidate
- * @return the generated Qiskit Runtime program if successful, an error message otherwise
+ * @return the generated AWS Runtime program if successful, an error message otherwise
  */
-async function invokeQiskitRuntimeHandler(candidate, requiredPrograms, qiskitRuntimeHandlerEndpoint, modeler) {
+async function invokeAWSRuntimeHandler(candidate, requiredPrograms, awsRuntimeHandlerEndpoint, modeler) {
 
   // remove trailing slash from endpoint
-  qiskitRuntimeHandlerEndpoint = qiskitRuntimeHandlerEndpoint.endsWith('/') ? qiskitRuntimeHandlerEndpoint.slice(0, -1) : qiskitRuntimeHandlerEndpoint;
+  awsRuntimeHandlerEndpoint = awsRuntimeHandlerEndpoint.endsWith('/') ? awsRuntimeHandlerEndpoint.slice(0, -1) : awsRuntimeHandlerEndpoint;
 
-  // calculate the order of the tasks within the candidate required for the generation in the Qiskit Runtime handler
+  // calculate the order of the tasks within the candidate required for the generation in the AWS Runtime handler
   let taskOrder = getTaskOrder(candidate, modeler);
   let beforeLoop, afterLoop = null;
   if (taskOrder.beforeLoop.length !== 0) {
@@ -153,7 +153,7 @@ async function invokeQiskitRuntimeHandler(candidate, requiredPrograms, qiskitRun
     afterLoop = taskOrder.afterLoop.toString();
   }
 
-  // create request containing information about the candidate and sent to Qiskit Runtime handler
+  // create request containing information about the candidate and sent to AWS Runtime handler
   // eslint-disable-next-line no-undef
   const fd = new FormData();
   fd.append('beforeLoop', beforeLoop);
@@ -161,13 +161,13 @@ async function invokeQiskitRuntimeHandler(candidate, requiredPrograms, qiskitRun
   fd.append('loopCondition', candidate.expression.body);
   fd.append('requiredPrograms', requiredPrograms.programs);
   try {
-    // let generationResult = await performAjax(qiskitRuntimeHandlerEndpoint + '/qiskit-runtime-handler/api/v1.0/generate-hybrid-program', fd);
-    let generationResult = await performAjax(qiskitRuntimeHandlerEndpoint + '/hello3', fd);
+     let generationResult = await performAjax(awsRuntimeHandlerEndpoint + '/aws-runtime-handler/api/v1.0/generate-hybrid-program', fd);
+    //let generationResult = await performAjax(awsRuntimeHandlerEndpoint + '/hello3', fd);
     // get location of the task object to poll
     if (!generationResult['Location']) {
-      return { error: 'Received invalid response from Qiskit Runtime handler.' };
+      return { error: 'Received invalid response from AWS Runtime handler.' };
     }
-    let taskLocation = qiskitRuntimeHandlerEndpoint + generationResult['Location'];
+    let taskLocation = awsRuntimeHandlerEndpoint + generationResult['Location'];
 
     // poll for task completion
     console.log('Polling for task completion at URL: ', taskLocation);
@@ -198,8 +198,8 @@ async function invokeQiskitRuntimeHandler(candidate, requiredPrograms, qiskitRun
     }
 
     // extract endpoint for the generated hybrid program and the related polling agent
-    let hybridProgramUrl = qiskitRuntimeHandlerEndpoint + result['programUrl'];
-    let pollingAgentUrl = qiskitRuntimeHandlerEndpoint + result['agentUrl'];
+    let hybridProgramUrl = awsRuntimeHandlerEndpoint + result['programUrl'];
+    let pollingAgentUrl = awsRuntimeHandlerEndpoint + result['agentUrl'];
 
     // download and return files
     console.log('Downloading hybrid program from URL: ', hybridProgramUrl);
@@ -211,7 +211,7 @@ async function invokeQiskitRuntimeHandler(candidate, requiredPrograms, qiskitRun
     console.log('Successfully downloaded resulting hybrid program and agent!');
     return { hybridProgramBlob: hybridProgramBlob, pollingAgentBlob: pollingAgentBlob };
   } catch (e) {
-    return { error: 'Unable to connect to the Qiskit Runtime handler.\nPlease check the endpoint!' };
+    return { error: 'Unable to connect to the AWS Runtime handler.\nPlease check the endpoint!' };
   }
 }
 
@@ -270,7 +270,7 @@ function getNextElement(element) {
 }
 
 /**
- * Search for invalid modeling construct for Qiskit Runtime within the given root element and return the first found construct
+ * Search for invalid modeling construct for AWS Runtime within the given root element and return the first found construct
  *
  * @param rootElement the root element to search for the invalid constructs
  * @return the first invalid modeling construct or undefined if all are valid
